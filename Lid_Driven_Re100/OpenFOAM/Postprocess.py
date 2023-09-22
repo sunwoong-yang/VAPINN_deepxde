@@ -8,8 +8,8 @@ x = xyz[:,0]
 y = xyz[:,1]
 z = xyz[:,2]
 
-x1_test = np.linspace(-0.2, 1.2, 101)
-x2_test = np.linspace(-0.2, 1.2, 101)
+x1_test = np.linspace(-0., 1., 101)
+x2_test = np.linspace(-0., 1., 101)
 X_test = np.zeros((len(x1_test)*len(x2_test), 2))
 X_test[:, 0] = np.vstack((x1_test,)*len(x2_test)).reshape(-1)
 X_test[:, 1] = np.vstack((x2_test,)*len(x1_test)).T.reshape(-1)

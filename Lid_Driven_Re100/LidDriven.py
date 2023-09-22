@@ -36,7 +36,7 @@ N_adapt_ = 200
 compile_kwargs_ = {"optimizer":"adam", "lr":1e-3}
 adam_iterations_ = [10000]*3
 lbfgs_iterations_ = None
-lbfgs_iterations_ = [0,0,20000]
+lbfgs_iterations_ = [0,0,0]
 network_kwars_ = {"layer_size" : [2] + [40] * 5 + [3],
               "activation" : 'tanh',
               "initializer" : 'Glorot uniform'}
@@ -77,7 +77,7 @@ PINN_model_VA, data_updated =  train_PINN(net_VA,
 
 #########################################################################
 """
-PA (advPressure-Aware)
+PA (Pressure-Aware)
 """
 net_PA = get_NN(**network_kwars_)
 
@@ -94,7 +94,7 @@ PINN_model_PA, data_updated =  train_PINN(net_PA,
 
 #########################################################################
 """
-VPA (Vorticity-advP-Aware)
+VPA (Vorticity-Pressure-Aware)
 """
 net_VPA = get_NN(**network_kwars_)
 
@@ -109,6 +109,41 @@ PINN_model_VPA, data_updated =  train_PINN(net_VPA,
                                        save_tag="VPA"
                                        )
 
+#########################################################################
+"""
+RA (residual-aware)
+"""
+net_RA = get_NN(**network_kwars_)
+
+PINN_model_RA, data_updated =  train_PINN(net_RA,
+                                       data,
+                                       compile_kwargs = compile_kwargs_,
+                                       adam_iterations=adam_iterations_,
+                                       N_adapt=N_adapt_,
+                                       type_adapt=4,
+                                       lbfgs_iterations=lbfgs_iterations_,
+                                       # lbfgs_iterations=[5,5],
+                                       save_tag="RA"
+                                       )
+
+#########################################################################
+"""
+GA (gradient-aware)
+"""
+net_GA = get_NN(**network_kwars_)
+
+PINN_model_GA, data_updated =  train_PINN(net_GA,
+                                       data,
+                                       compile_kwargs = compile_kwargs_,
+                                       adam_iterations=adam_iterations_,
+                                       N_adapt=N_adapt_,
+                                       type_adapt=5,
+                                       lbfgs_iterations=lbfgs_iterations_,
+                                       # lbfgs_iterations=[5,5],
+                                       save_tag="GA"
+                                       )
+
+
 ########################### Draw flowfield ###########################
 
 x1_test = np.linspace(0, 1, 101)
@@ -121,11 +156,15 @@ Y_test = PINN_model.predict(X_test)
 Y_test_VA = PINN_model_VA.predict(X_test)
 Y_test_PA = PINN_model_PA.predict(X_test)
 Y_test_VPA = PINN_model_VPA.predict(X_test)
+Y_test_RA = PINN_model_RA.predict(X_test)
+Y_test_GA = PINN_model_GA.predict(X_test)
 
 plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test[:,0], y2=Y_test[:,1], tag='Van', stream=False)
 plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_VA[:,0], y2=Y_test_VA[:,1], tag='VA', stream=False)
 plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_PA[:,0], y2=Y_test_PA[:,1], tag='PA', stream=False)
 plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_VPA[:,0], y2=Y_test_VPA[:,1], tag='VP', stream=False)
+plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_RA[:,0], y2=Y_test_RA[:,1], tag='RA', stream=False)
+plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_GA[:,0], y2=Y_test_GA[:,1], tag='GA', stream=False)
 
 
 print("**** Vanilla test losses ****")
@@ -136,3 +175,7 @@ print("**** PA test losses ****")
 print(eval_pde_loss(PINN_model_PA))
 print("**** VPA test losses ****")
 print(eval_pde_loss(PINN_model_VPA))
+print("**** RA test losses ****")
+print(eval_pde_loss(PINN_model_RA))
+print("**** GA test losses ****")
+print(eval_pde_loss(PINN_model_GA))

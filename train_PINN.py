@@ -52,6 +52,6 @@ def train_PINN(net, data,
 		# Do not update collocation in the last iteration
 		if enu != len(adam_iterations)-1:
 			update_collocation(model_vanilla, data_vanilla, N_adapt=N_adapt, type_adapt=type_adapt)
-			plot_pts(data_vanilla, N_adapt=N_adapt, tag=save_tag)
+			plot_pts(data_vanilla, N_adapt=N_adapt, tag=save_tag, type_adapt=type_adapt)
 
 	return model_vanilla, data_vanilla

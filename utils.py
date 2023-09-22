@@ -48,9 +48,18 @@ def update_collocation(model, data, N_adapt=0, type_adapt=0):
             dP_dx = dde.grad.jacobian(u, x, i=2, j=0)
             return dP_dx
 
+        def evaluate_gradient(x, u):
+            '''
+            This version considers the sum of the gradient at each direction.
+            TODO: investigate other approaches for gradient-aware adaptive sampling
+            '''
+            grad_x = dde.grad.jacobian(u, x, i=0, j=0)
+            grad_y = dde.grad.jacobian(u, x, i=1, j=1)
+            return torch.abs(grad_x) + torch.abs(grad_y)
+
         if type_adapt==0 and N_adapt!=0:
             # In this case, size of the new collocation pts would decrease. Therefore, force N_adapt as 0 value.
-            print("Though type_adapt is selected as random sampling, but N_adapt!=0 -> N_adapt is manully adjusted to 0!!")
+            print("Though type_adapt is selected as random sampling, N_adapt!=0 -> N_adapt is manully adjusted to 0!!")
             N_adapt = 0
 
         new_even = dde.data.PDE(data.geom, pde=None, bcs=[], num_domain=eval_pts.shape[0] - N_adapt,
@@ -64,7 +73,7 @@ def update_collocation(model, data, N_adapt=0, type_adapt=0):
             """
             return new_even
 
-        elif type_adapt in [1, 2, 3]:
+        elif type_adapt in [1, 2, 3, 4, 5]:
 
             if type_adapt==1:
                 """
@@ -120,6 +129,26 @@ def update_collocation(model, data, N_adapt=0, type_adapt=0):
                      y_unique_p)
                 )
 
+            elif type_adapt == 4:
+                """
+				Residual-aware
+				"""
+                # Below line only considers the loss of mass conservation ([0]: x-momentum, [1]: y-momentum, [2]: mass)
+                y_evaluated = model.predict(eval_pts, operator=data.pde)[2].reshape(-1)
+                sorted_indices = np.argsort(y_evaluated)[::-1]
+
+                new_adapt = eval_pts[sorted_indices][:N_adapt]
+
+            elif type_adapt == 5:
+                """
+				Gradient-aware
+				"""
+                # Below line only considers the loss of mass conservation ([0]: x-momentum, [1]: y-momentum, [2]: mass)
+                y_evaluated = model.predict(eval_pts, operator=evaluate_gradient).reshape(-1)
+                sorted_indices = np.argsort(y_evaluated)[::-1]
+
+                new_adapt = eval_pts[sorted_indices][:N_adapt]
+
             return np.vstack((new_even, new_adapt))
 
         else:
@@ -144,7 +173,20 @@ def update_collocation(model, data, N_adapt=0, type_adapt=0):
     data.train_x = new_train_x
     print(f"Adaptive sampling for type {type_adapt} is completed!")
 
-def plot_pts(data, N_adapt=100, cur_directory="", tag="0"):
+def plot_pts(data, N_adapt=100, cur_directory="", tag="0", type_adapt=0):
+
+    if type_adapt==0:
+        label_ = "Randomly added points"
+    elif type_adapt==1:
+        label_ = "Vorticity-aware points"
+    elif type_adapt==2:
+        label_ = "Pressure-aware points"
+    elif type_adapt==3:
+        label_ = "Vorticity-Pressure-aware points"
+    elif type_adapt==4:
+        label_ = "Residual-aware points"
+    elif type_adapt == 5:
+        label_ = "Gradient-aware points"
 
     past_x = data.train_x[:-N_adapt][:,0]
     past_y = data.train_x[:-N_adapt][:,1]
@@ -153,8 +195,9 @@ def plot_pts(data, N_adapt=100, cur_directory="", tag="0"):
     added_y = data.train_x[-N_adapt:][:,1]
 
     fig, ax = plt.subplots(dpi=150)
-    ax.scatter(past_x, past_y, alpha=0.5, color='k', label="Even collocation points")
-    ax.scatter(added_x, added_y, alpha=0.7, color='r', label="Vorticity-aware collocation points")
+
+    ax.scatter(added_x, added_y, alpha=0.7, color='r', label=label_, zorder=1)
+    ax.scatter(past_x, past_y, alpha=0.5, color='k', label="Randomly added points", zorder=0)
     ax.legend(fontsize=15, loc='lower right', frameon=True)
     ax.set_xlim(0,1)
     ax.set_ylim(0,1)
