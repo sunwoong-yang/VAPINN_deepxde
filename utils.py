@@ -1,5 +1,6 @@
 import deepxde as dde
 import os
+import glob
 import numpy as np
 import torch
 
@@ -51,11 +52,14 @@ def update_collocation(model, data, N_adapt=0, type_adapt=0):
         def evaluate_gradient(x, u):
             '''
             This version considers the sum of the gradient at each direction.
+            For the time being, gradient of the velocity vector seems the most general way..
             TODO: investigate other approaches for gradient-aware adaptive sampling
             '''
-            grad_x = dde.grad.jacobian(u, x, i=0, j=0)
-            grad_y = dde.grad.jacobian(u, x, i=1, j=1)
-            return torch.abs(grad_x) + torch.abs(grad_y)
+            du_dx = dde.grad.jacobian(u, x, i=0, j=0)
+            du_dy = dde.grad.jacobian(u, x, i=0, j=1)
+            dv_dx = dde.grad.jacobian(u, x, i=1, j=0)
+            dv_dy = dde.grad.jacobian(u, x, i=1, j=1)
+            return torch.abs(du_dx) + torch.abs(du_dy) + torch.abs(dv_dx) + torch.abs(dv_dy)
 
         if type_adapt==0 and N_adapt!=0:
             # In this case, size of the new collocation pts would decrease. Therefore, force N_adapt as 0 value.
@@ -149,6 +153,13 @@ def update_collocation(model, data, N_adapt=0, type_adapt=0):
 
                 new_adapt = eval_pts[sorted_indices][:N_adapt]
 
+            # elif type_adapt == 6:
+            #     """
+			# 	Residual-gradient-aware
+			# 	"""
+            #     # Below line only considers the loss of mass conservation ([0]: x-momentum, [1]: y-momentum, [2]: mass)
+            #     ??
+
             return np.vstack((new_even, new_adapt))
 
         else:
@@ -213,13 +224,17 @@ def plot_pts(data, N_adapt=100, cur_directory="", tag="0", type_adapt=0):
             break
     # plt.show()
 
-def plot_flowfield(x1, x2, y1, y2, qoi_name=["U_x","U_y"], tag='Vanilla', stream=True):
+def plot_flowfield(x1, x2, y1, y2, qoi_name=["U_x","U_y"], tag='Vanilla', stream=True, initialize_levels=False):
     y1 = y1.reshape(len(x2), len(x1))
     y2 = y2.reshape(len(x2), len(x1))
     fig, ax = plt.subplots(dpi=150)
     if stream:
         ax.streamplot(x1, x2, y1, y2, density=1.5, linewidth=0.7, color='w', arrowsize=0.7, broken_streamlines=True)
-    img = ax.contourf(x1, x2, y1, levels = np.linspace(-0.2, 1., 100), cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+    if initialize_levels:
+        img = ax.contourf(x1, x2, y1, levels=np.linspace(y1.min(), y1.max(), 100),
+                          cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+    else:
+        img = ax.contourf(x1, x2, y1, levels = np.linspace(-0.2, 1., 100), cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
     fig.colorbar(img, ticks=np.linspace(img.levels.min(),img.levels.max(),6))
     ax.set_xlim(0,1)
     ax.set_ylim(0,1)
@@ -233,7 +248,11 @@ def plot_flowfield(x1, x2, y1, y2, qoi_name=["U_x","U_y"], tag='Vanilla', stream
     fig, ax = plt.subplots(dpi=150)
     if stream:
         ax.streamplot(x1, x2, y1, y2, density=1.5, linewidth=0.7, color='w', arrowsize=0.7, broken_streamlines=True)
-    img = ax.contourf(x1, x2, y2, levels = np.linspace(-0.5, .3, 100), cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+    if initialize_levels:
+        img = ax.contourf(x1, x2, y2, levels=np.linspace(y2.min(), y2.max(), 100),
+                          cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+    else:
+        img = ax.contourf(x1, x2, y2, levels = np.linspace(-0.5, .3, 100), cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
     fig.colorbar(img, ticks=np.linspace(img.levels.min(),img.levels.max(),6))
     ax.set_xlim(0,1)
     ax.set_ylim(0,1)
@@ -255,3 +274,11 @@ def eval_pde_loss(model, x_eval=None):
     # second element is the mean losses (axis=1)
     losses = model.outputs_losses_test(x_eval, y_target, auxiliary_vars=None)[1].detach()
     return losses
+
+def remove_figs_models():
+    files = glob.glob("./fig/*")
+    for file in files:
+        os.remove(file)
+    files = glob.glob("./saved_models/*")
+    for file in files:
+        os.remove(file)

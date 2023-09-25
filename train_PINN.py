@@ -19,6 +19,7 @@ def train_PINN(net, data,
                type_adapt=0,
                lbfgs_iterations=None,
                save_tag="",
+               initialize_levels=False,
                ):
 
 	# Compile & Train - ADAM
@@ -41,13 +42,13 @@ def train_PINN(net, data,
 	for enu, (adam_iter, lbfgs_iter) in enumerate(zip(adam_iterations, lbfgs_iterations)):
 
 		# Train with Adam
-		losshistory, train_state = model_vanilla.train(iterations = adam_iter, display_every = 1e8)
+		losshistory, train_state = model_vanilla.train(iterations = adam_iter, display_every = 1e8, model_save_path = "./saved_models/" + save_tag )
 
 		# Train with l-bfgs-b
 		if not lbfgs_iter in [0, None]:
 			dde.optimizers.set_LBFGS_options(maxiter=lbfgs_iter)
 			model_vanilla.compile(optimizer='L-BFGS-B')
-			losshistory, train_state = model_vanilla.train(display_every=1e8)
+			losshistory, train_state = model_vanilla.train(display_every=1e8, model_save_path = "./saved_models/" + save_tag)
 
 		# Do not update collocation in the last iteration
 		if enu != len(adam_iterations)-1:
