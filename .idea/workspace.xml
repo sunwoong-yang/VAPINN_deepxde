@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0fe5fa43-a4a6-4c0e-a6d3-a9ac28baf2cc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Airfoil_Re50_AoA5/Airfoil_Re50_AoA5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cylinder_/Cylinder_Re100.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lid_Driven_Re1000/load_models.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/asdf.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/geom_bcs/Airfoil.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/geom_bcs/Cylinder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/VAPINN_deepxde.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/VAPINN_deepxde.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/Lid_Re100.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/Lid_Re100.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_GA_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_GA_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_GA_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_GA_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_PA_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_PA_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_PA_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_PA_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_RA_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_RA_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_RA_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_RA_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_VA_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_VA_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_VA_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_VA_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_VPA_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_VPA_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_VPA_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_VPA_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_Van_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_Van_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_Van_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/Pts_Van_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_GA.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_GA.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_PA.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_PA.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_RA.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_RA.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_VA.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_VA.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_VP.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_VP.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_Van.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_x_Van.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_GA.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_GA.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_PA.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_PA.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_RA.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_RA.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_VA.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_VA.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_VP.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_VP.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_Van.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re100/fig/U_y_Van.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/GA-10000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/GA-15000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/GA-5000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/PA-10000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/PA-15000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/PA-5000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/RA-10000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/RA-15000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/RA-5000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/VA-10000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/VA-15000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/VA-5000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/VPA-10000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/VPA-15000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/VPA-5000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/Van-10000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/Van-15000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re100/saved_models/Van-5000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re1000/Lid_Re1000.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re1000/Lid_Re1000.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re1000/fig/Pts_VA_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re1000/fig/Pts_Van_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re1000/fig/Pts_Van_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re1000/fig/Pts_Van_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re1000/saved_models/VA-20000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re1000/saved_models/Van-20000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re1000/saved_models/Van-40000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re1000/saved_models/Van-60000.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/Lid_Re10000.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re10000/Lid_Re10000.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_GA_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_GA_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_PA_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_PA_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_RA_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_RA_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_VA_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_VA_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_VPA_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_VPA_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_Van_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_Van_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/Pts_Van_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_x_GA_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_x_PA_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_x_RA_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_x_VA_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_x_VP_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_x_Van_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_y_GA_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_y_PA_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_y_RA_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_y_VA_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_y_VP_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lid_Driven_Re10000/fig/U_y_Van_stream.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/train_PINN.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_PINN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2Vy2tMrifvLMnfe6CAIA1xoCFgU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0fe5fa43-a4a6-4c0e-a6d3-a9ac28baf2cc" name="Changes" comment="" />
+      <created>1695794212872</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1695794212872</updated>
+      <workItem from="1695794213970" duration="538000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

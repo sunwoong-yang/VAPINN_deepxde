@@ -5,7 +5,11 @@ import numpy as np
 import torch
 
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import seaborn as sns
+import sys
+sys.path.insert(0, '/workspace')
+from geom_bcs.Airfoil import boundaryNACA4D
 
 
 def divide_data(data):
@@ -67,7 +71,7 @@ def update_collocation(model, data, N_adapt=0, type_adapt=0):
             N_adapt = 0
 
         new_even = dde.data.PDE(data.geom, pde=None, bcs=[], num_domain=eval_pts.shape[0] - N_adapt,
-                                train_distribution='LHS')
+                                train_distribution='pseudo')
         new_even = new_even.train_x_all
 
         if type_adapt==0:
@@ -172,7 +176,7 @@ def update_collocation(model, data, N_adapt=0, type_adapt=0):
         # 새롭게 샘플링된 pts를 사용하여 vorticity evaluation
         eval_pts = dde.data.PDE(data.geom, pde=None, bcs=[],
                                 num_domain=past_collocation_pts.shape[0],
-                                train_distribution='LHS').train_x_all
+                                train_distribution='pseudo').train_x_all
     else:
         # 이전 iteration의 collocation pts를 사용하여 vorticity evaluation
         eval_pts = past_collocation_pts
@@ -184,7 +188,7 @@ def update_collocation(model, data, N_adapt=0, type_adapt=0):
     data.train_x = new_train_x
     print(f"Adaptive sampling for type {type_adapt} is completed!")
 
-def plot_pts(data, N_adapt=100, cur_directory="", tag="0", type_adapt=0):
+def plot_pts(data, N_adapt=100, cur_directory="", tag="0", type_adapt=0, flow_problem="Lid_Driven"):
 
     if type_adapt==0:
         label_ = "Randomly added points"
@@ -205,63 +209,146 @@ def plot_pts(data, N_adapt=100, cur_directory="", tag="0", type_adapt=0):
     added_x = data.train_x[-N_adapt:][:,0]
     added_y = data.train_x[-N_adapt:][:,1]
 
-    fig, ax = plt.subplots(dpi=150)
 
-    ax.scatter(added_x, added_y, alpha=0.7, color='r', label=label_, zorder=1)
-    ax.scatter(past_x, past_y, alpha=0.5, color='k', label="Randomly added points", zorder=0)
+
+    if flow_problem == "Lid_Driven":
+        fig, ax = plt.subplots(dpi=150)
+        ax.scatter(added_x, added_y, alpha=0.7, color='r', label=label_, zorder=1)
+        ax.scatter(past_x, past_y, alpha=0.5, color='k', label="Randomly added points", zorder=0)
+
+        ax.set_xlim(0,1)
+        ax.set_ylim(0,1)
+
+    elif flow_problem == "Cylinder":
+        # fig = plt.figure(dpi=150)
+        # ax = fig.add_subplot(projection='3d')
+        fig, ax = plt.subplots(dpi=150)
+        # past_t = data.train_x[:-N_adapt][:, 2]
+        # added_t = data.train_x[-N_adapt:][:, 2]
+
+        ax.scatter(added_x, added_y, alpha=0.7, color='r', label=label_, zorder=0, s=2)
+        # ax.scatter(past_x, past_y, alpha=0.5, color='k', label="Randomly added points", zorder=0)
+        # ax.scatter(added_x, added_y, added_t, alpha=0.7, color='r', label=label_, zorder=1)
+        # ax.scatter(past_x, past_y, past_t, alpha=0.1, color='k', label="Randomly added points", zorder=0)
+        plt.axis('scaled')
+        ax.set_xlim(-2.5, 15)
+        ax.set_ylim(-2.5, 2.5)
+        shp = patches.Circle((0, 0), radius=0.5, edgecolor='k', facecolor='grey', zorder=1)
+        plt.gca().add_patch(shp)
+        plt.tight_layout()
+
+    elif flow_problem == "Airfoil":
+        fig, ax = plt.subplots(dpi=150)
+        ax.scatter(added_x, added_y, alpha=0.7, color='r', label=label_, zorder=0, s=2)
+        # ax.scatter(past_x, past_y, alpha=0.5, color='k', label="Randomly added points", zorder=0)
+        # ax.scatter(added_x, added_y, added_t, alpha=0.7, color='r', label=label_, zorder=1)
+        # ax.scatter(past_x, past_y, past_t, alpha=0.1, color='k', label="Randomly added points", zorder=0)
+        plt.axis('scaled')
+        ax.set_xlim(-1., 4)
+        ax.set_ylim(-2, 2)
+        airfoil = boundaryNACA4D(0, 0, 12, 1, 150, 0, 0)
+        ax.plot(airfoil[:,0], airfoil[:,1], color='k', zorder=1)
+        plt.tight_layout()
+
     ax.legend(fontsize=15, loc='lower right', frameon=True)
-    ax.set_xlim(0,1)
-    ax.set_ylim(0,1)
-
     fig_index = 0
     while True:
         fig_index += 1
-        cur_dir = os.path.join(os.getcwd(), f"fig\Pts_{tag}_{fig_index}.png")
+        # cur_dir = os.path.join(os.getcwd(), f"fig\Pts_{tag}_{fig_index}.png")
+        cur_dir = f"./fig/Pts_{tag}_{fig_index}.png"
         if os.path.isfile(cur_dir):
             continue
         else:
-            fig.savefig(f"./fig/Pts_{tag}_{fig_index}")
+            # fig.savefig(f"./fig/Pts_{tag}_{fig_index}", bbox_inches='tight')
+            fig.savefig(f"./fig/Pts_{tag}_{fig_index}", )
             break
     # plt.show()
 
-def plot_flowfield(x1, x2, y1, y2, qoi_name=["U_x","U_y"], tag='Vanilla', stream=True, initialize_levels=False):
+def plot_flowfield(x1, x2, y1, y2, qoi_name=["U_x","U_y"], tag='Vanilla', stream=True, initialize_levels=False, flow_problem="Lid_Driven"):
     y1 = y1.reshape(len(x2), len(x1))
     y2 = y2.reshape(len(x2), len(x1))
     fig, ax = plt.subplots(dpi=150)
     if stream:
-        ax.streamplot(x1, x2, y1, y2, density=1.5, linewidth=0.7, color='w', arrowsize=0.7, broken_streamlines=True)
+        ax.streamplot(x1, x2, y1, y2, density=1.5, linewidth=0.7, color='w', arrowsize=0.7)
     if initialize_levels:
         img = ax.contourf(x1, x2, y1, levels=np.linspace(y1.min(), y1.max(), 100),
                           cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
     else:
-        img = ax.contourf(x1, x2, y1, levels = np.linspace(-0.2, 1., 100), cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
-    fig.colorbar(img, ticks=np.linspace(img.levels.min(),img.levels.max(),6))
-    ax.set_xlim(0,1)
-    ax.set_ylim(0,1)
+        if flow_problem == "Lid_Driven":
+            img = ax.contourf(x1, x2, y1, levels = np.linspace(-0.2, 1., 100), cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+            ax.set_xlim(0, 1)
+            ax.set_ylim(0, 1)
+            fig.colorbar(img, ticks=np.linspace(img.levels.min(), img.levels.max(), 6))
+
+        elif flow_problem == "Cylinder":
+            img = ax.contourf(x1, x2, y1, levels=np.linspace(-0.3, 1.2, 100),
+                              cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+            plt.axis('scaled')
+            ax.set_xlim(-2.5, 15)
+            ax.set_ylim(-2.5, 2.5)
+            shp = patches.Circle((0, 0), radius=0.5, edgecolor='k', facecolor='grey', zorder=1)
+            plt.gca().add_patch(shp)
+            plt.tight_layout()
+            fig.colorbar(img, ticks=np.linspace(img.levels.min(), img.levels.max(), 6), location="bottom")
+
+        elif flow_problem == "Airfoil":
+            img = ax.contourf(x1, x2, y1, levels = np.linspace(-0.1, 1.2, 100), cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+            airfoil = boundaryNACA4D(0, 0, 12, 1, 150, 0, 0)
+            ax.plot(airfoil[:,0], airfoil[:,1], color='white', zorder=1)
+            ax.set_xlim(-1., 4)
+            ax.set_ylim(-2, 2)
+            fig.colorbar(img, ticks=np.linspace(img.levels.min(), img.levels.max(), 6))
+    # plt.axis('scaled')
+    # plt.tight_layout()
+
     ax.set_title(f"{tag}:${qoi_name[0]} [m/s]$", fontsize=13)
     if stream:
         fig.savefig(f"./fig/{qoi_name[0]}_{tag}_stream")
     else:
-        fig.savefig(f"./fig/{qoi_name[0]}_{tag}")
-    # plt.show()
+        fig.savefig(f"./fig/{qoi_name[0]}_{tag}", bbox_inches='tight')
+    plt.close()
 
     fig, ax = plt.subplots(dpi=150)
     if stream:
-        ax.streamplot(x1, x2, y1, y2, density=1.5, linewidth=0.7, color='w', arrowsize=0.7, broken_streamlines=True)
+        ax.streamplot(x1, x2, y1, y2, density=1.5, linewidth=0.7, color='w', arrowsize=0.7)
     if initialize_levels:
         img = ax.contourf(x1, x2, y2, levels=np.linspace(y2.min(), y2.max(), 100),
                           cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
     else:
-        img = ax.contourf(x1, x2, y2, levels = np.linspace(-0.5, .3, 100), cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
-    fig.colorbar(img, ticks=np.linspace(img.levels.min(),img.levels.max(),6))
-    ax.set_xlim(0,1)
-    ax.set_ylim(0,1)
+        if flow_problem == "Lid_Driven":
+            img = ax.contourf(x1, x2, y2, levels=np.linspace(-0.5, .3, 100),
+                              cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+            ax.set_xlim(0, 1)
+            ax.set_ylim(0, 1)
+            fig.colorbar(img, ticks=np.linspace(img.levels.min(), img.levels.max(), 6))
+
+        elif flow_problem == "Cylinder":
+            img = ax.contourf(x1, x2, y1, levels=np.linspace(-0.8, 0.8, 100),
+                              cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+            plt.axis('scaled')
+            ax.set_xlim(-2.5, 15)
+            ax.set_ylim(-2.5, 2.5)
+            shp = patches.Circle((0, 0), radius=0.5, edgecolor='k', facecolor='grey', zorder=1)
+            plt.gca().add_patch(shp)
+            plt.tight_layout()
+            fig.colorbar(img, ticks=np.linspace(img.levels.min(),img.levels.max(),6), location="bottom")
+
+        elif flow_problem == "Airfoil":
+            img = ax.contourf(x1, x2, y2, levels = np.linspace(-0.2, .2, 100), cmap=sns.color_palette("icefire", as_cmap=True), extend='both')
+            airfoil = boundaryNACA4D(0, 0, 12, 1, 150, 0, 0)
+            ax.plot(airfoil[:,0], airfoil[:,1], color='white', zorder=1)
+            ax.set_xlim(-1, 4)
+            ax.set_ylim(-2, 2)
+            fig.colorbar(img, ticks=np.linspace(img.levels.min(), img.levels.max(), 6))
+    # plt.axis('scaled')
+    # plt.tight_layout()
+
     ax.set_title(f"{tag}:${qoi_name[1]} [m/s]$", fontsize=13)
     if stream:
         fig.savefig(f"./fig/{qoi_name[1]}_{tag}_stream")
     else:
-        fig.savefig(f"./fig/{qoi_name[1]}_{tag}")
-    # plt.show()
+        fig.savefig(f"./fig/{qoi_name[1]}_{tag}", bbox_inches='tight')
+    plt.close()
 
 def eval_pde_loss(model, x_eval=None):
     if x_eval is None:

@@ -7,7 +7,9 @@ from geom_bcs.Lid_Driven import get_liddriven_geom_bcs
 
 dde.config.set_random_seed(42)
 remove_figs_models()
-
+# import torch
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# print('Using device:', device)
 
 def liddriven_pde(x, u):
     nu = 0.01
@@ -32,11 +34,11 @@ def liddriven_pde(x, u):
     return [momentum_x, momentum_y, continuity]
 
 geom, bcs = get_liddriven_geom_bcs()
-data = dde.data.PDE(geom, liddriven_pde, bcs, num_domain=100, num_boundary=100, num_test=5000, train_distribution='LHS')
+data = dde.data.PDE(geom, liddriven_pde, bcs, num_domain=100, num_boundary=100, num_test=5000, train_distribution='pseudo')
 
 N_adapt_ = 20
 compile_kwargs_ = {"optimizer":"adam", "lr":1e-3}
-adam_iterations_ = [5000]*3
+adam_iterations_ = [7000]*3
 lbfgs_iterations_ = None
 lbfgs_iterations_ = [0,0,0]
 network_kwars_ = {"layer_size" : [2] + [40] * 5 + [3],
@@ -57,7 +59,8 @@ PINN_model, data_updated =  train_PINN(net,
                                        type_adapt=0,
                                        lbfgs_iterations=lbfgs_iterations_,
                                        # lbfgs_iterations=[5,5],
-                                       save_tag="Van"
+                                       save_tag="Van",
+                                       flow_problem="Lid_Driven",
                                        )
 
 #########################################################################
@@ -74,7 +77,8 @@ PINN_model_VA, data_updated =  train_PINN(net_VA,
                                        type_adapt=1,
                                        lbfgs_iterations=lbfgs_iterations_,
                                        # lbfgs_iterations=[5,5],
-                                       save_tag="VA"
+                                       save_tag="VA",
+                                       flow_problem="Lid_Driven",
                                        )
 
 #########################################################################
@@ -91,7 +95,8 @@ PINN_model_PA, data_updated =  train_PINN(net_PA,
                                        type_adapt=2,
                                        lbfgs_iterations=lbfgs_iterations_,
                                        # lbfgs_iterations=[5,5],
-                                       save_tag="PA"
+                                       save_tag="PA",
+                                       flow_problem="Lid_Driven",
                                        )
 
 #########################################################################
@@ -108,7 +113,8 @@ PINN_model_VPA, data_updated =  train_PINN(net_VPA,
                                        type_adapt=3,
                                        lbfgs_iterations=lbfgs_iterations_,
                                        # lbfgs_iterations=[5,5],
-                                       save_tag="VPA"
+                                       save_tag="VPA",
+                                       flow_problem="Lid_Driven",
                                        )
 
 #########################################################################
@@ -125,7 +131,8 @@ PINN_model_RA, data_updated =  train_PINN(net_RA,
                                        type_adapt=4,
                                        lbfgs_iterations=lbfgs_iterations_,
                                        # lbfgs_iterations=[5,5],
-                                       save_tag="RA"
+                                       save_tag="RA",
+                                       flow_problem="Lid_Driven",
                                        )
 
 #########################################################################
@@ -142,7 +149,8 @@ PINN_model_GA, data_updated =  train_PINN(net_GA,
                                        type_adapt=5,
                                        lbfgs_iterations=lbfgs_iterations_,
                                        # lbfgs_iterations=[5,5],
-                                       save_tag="GA"
+                                       save_tag="GA",
+                                       flow_problem="Lid_Driven",
                                        )
 
 
@@ -161,12 +169,12 @@ Y_test_VPA = PINN_model_VPA.predict(X_test)
 Y_test_RA = PINN_model_RA.predict(X_test)
 Y_test_GA = PINN_model_GA.predict(X_test)
 
-plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test[:,0], y2=Y_test[:,1], tag='Van', stream=False, initialize_levels=False)
-plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_VA[:,0], y2=Y_test_VA[:,1], tag='VA', stream=False, initialize_levels=False)
-plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_PA[:,0], y2=Y_test_PA[:,1], tag='PA', stream=False, initialize_levels=False)
-plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_VPA[:,0], y2=Y_test_VPA[:,1], tag='VP', stream=False, initialize_levels=False)
-plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_RA[:,0], y2=Y_test_RA[:,1], tag='RA', stream=False, initialize_levels=False)
-plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_GA[:,0], y2=Y_test_GA[:,1], tag='GA', stream=False, initialize_levels=False)
+plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test[:,0], y2=Y_test[:,1], tag='Van', flow_problem="Lid_Driven", stream=False, initialize_levels=False)
+plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_VA[:,0], y2=Y_test_VA[:,1], tag='VA', flow_problem="Lid_Driven", stream=False, initialize_levels=False)
+plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_PA[:,0], y2=Y_test_PA[:,1], tag='PA', flow_problem="Lid_Driven", stream=False, initialize_levels=False)
+plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_VPA[:,0], y2=Y_test_VPA[:,1], tag='VP', flow_problem="Lid_Driven", stream=False, initialize_levels=False)
+plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_RA[:,0], y2=Y_test_RA[:,1], tag='RA', flow_problem="Lid_Driven", stream=False, initialize_levels=False)
+plot_flowfield(x1=x1_test, x2=x2_test, y1=Y_test_GA[:,0], y2=Y_test_GA[:,1], tag='GA', flow_problem="Lid_Driven", stream=False, initialize_levels=False)
 
 
 print("**** Vanilla test losses ****")
