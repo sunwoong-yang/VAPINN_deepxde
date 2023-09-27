@@ -1,9 +1,21 @@
+import os
+# os.environ["CUDA_VISIBLE_DEVICES"]="2"
+import sys
+
+sys.path.insert(0, '/workspace')
+
 import deepxde as dde
 import copy
 import numpy as np
 from utils import update_collocation, plot_pts, plot_flowfield, eval_pde_loss, remove_figs_models
 from train_PINN import get_NN, train_PINN
 from geom_bcs.Lid_Driven import get_liddriven_geom_bcs
+
+import torch
+
+os.chdir('/workspace/Lid_Driven_Re1000')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('Using device:', device)
 
 dde.config.set_random_seed(42)
 remove_figs_models()
