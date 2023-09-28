@@ -42,7 +42,7 @@ def airfoil_pde(x, u):
     return [momentum_x, momentum_y, continuity]
 
 geomtime, bcs = get_airfoil_geom_bcs(AoA=10)
-data = dde.data.PDE(geomtime, airfoil_pde, bcs, num_domain=40000, num_boundary=5000, num_test=5000, train_distribution='pseudo')
+data = dde.data.PDE(geomtime, airfoil_pde, bcs, num_domain=40000, num_boundary=10000, num_test=5000, train_distribution='pseudo')
 
 
 # import matplotlib.pyplot as plt
@@ -52,11 +52,11 @@ data = dde.data.PDE(geomtime, airfoil_pde, bcs, num_domain=40000, num_boundary=5
 # plt.show()
 
 N_adapt_ = 8000
-compile_kwargs_ = {"optimizer":"adam", "lr":[1e-3, 1e-4, 1e-5, 1e-6]}
-adam_iterations_ = [50000]*4
+compile_kwargs_ = {"optimizer":"adam", "lr":[1e-3, 1e-3, 1e-4, 1e-4]}
+adam_iterations_ = [20000]*4
 lbfgs_iterations_ = None
 # lbfgs_iterations_ = [0,0,25000]
-network_kwars_ = {"layer_size" : [2] + [128] * 6 + [3],
+network_kwars_ = {"layer_size" : [2] + [128] * 12 + [3],
               "activation" : 'tanh',
               "initializer" : 'Glorot uniform'}
 #########################################################################

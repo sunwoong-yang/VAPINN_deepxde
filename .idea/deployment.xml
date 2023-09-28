@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" promptOnRemoteOverwrite="CHECK_CONTENT" serverName="lab1_ysw@143.248.224.26:22 password" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false" notifyRemoteChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="lab1_ysw@143.248.224.26:22 password" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
     <option name="confirmBeforeUploading" value="false" />
     <serverData>
       <paths name="lab1_ysw@143.248.224.26:22 password">
@@ -11,5 +11,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

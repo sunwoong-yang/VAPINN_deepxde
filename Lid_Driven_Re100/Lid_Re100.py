@@ -13,7 +13,7 @@ from geom_bcs.Lid_Driven import get_liddriven_geom_bcs
 
 import torch
 
-os.chdir('/workspace/Lid_Driven_Re1000')
+os.chdir('/workspace/Lid_Driven_Re100')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('Using device:', device)
 
